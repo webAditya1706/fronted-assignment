@@ -15,6 +15,7 @@ import axiosInstance from "@/utils/interSeptor";
 
 const UpdateUser = () => {
   const [preview, setPreview] = useState<string | null>(null);
+  const [editData,setEditData] = useState();
   const fileInputRef = useRef();
   const dispatch = useDispatch();
   const router = useRouter();
@@ -85,7 +86,7 @@ const UpdateUser = () => {
             <div className="form_section">
               <div className="form_container">
                 <Formik
-                  initialValues={signUpInitialValues}
+                  initialValues={editData || signUpInitialValues}
                   validationSchema={SignUpValidationSchema}
                   onSubmit={handleSubmit}
                 >
