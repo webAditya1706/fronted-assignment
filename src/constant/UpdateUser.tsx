@@ -13,7 +13,7 @@ import SelectFile from "@/componant/form/feilds/selectFile";
 import { useRouter } from "next/router";
 import axiosInstance from "@/utils/interSeptor";
 
-const SignUp = () => {
+const UpdateUser = () => {
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef();
   const dispatch = useDispatch();
@@ -67,6 +67,8 @@ const SignUp = () => {
           .get(`user/getUserById/${id}`)
           .then((res) => {
             console.log(res.data.data, "======res");
+            setEditData(res.data.data)
+
           })
           .catch((error) => {
             console.log(error, error);
@@ -142,4 +144,4 @@ const SignUp = () => {
 };
 
 
-export default SignUp;
+export default UpdateUser;

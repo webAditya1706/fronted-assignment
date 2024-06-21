@@ -50,3 +50,10 @@
   font-size: 20px;
   font-weight: 500;
 }
+
+.img-preview{
+  width:100px;
+  height: 100px;
+  border: 1px solid #ddd;
+  border-radius: 100px;
+}

@@ -1,2 +1,4 @@
-import SignUp from "../signup";
-export default SignUp;
+import UpdateUser from "@/constant/UpdateUser";
+
+
+export default UpdateUser;
