@@ -1,42 +1,37 @@
-import InputField from "@/componant/form/feilds/InputField";
-import SelectFile from "@/componant/form/feilds/selectFile";
-import { updateUserInitialValues } from "@/componant/form/initialValues/formInitialValues";
-import { UpdateUserValidationSchema } from "@/componant/form/validations/formValidationSchema";
-import { createUserAction, updateUserAction } from "@/redux/actions/formAction";
-import axiosInstance from "@/utils/interSeptor";
-import { Form, Formik } from "formik";
-import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import React, { useEffect, useRef, useState } from "react";
+import { Formik, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
+import { Col, Container, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
-const initialValue = {
-  name: "",
-  email: "",
-  contact: "",
-  logo: ""
-}
-const UpdateUser = () => {
+import { createUserAction, updateUserAction } from "@/redux/actions/formAction";
+import { UserData } from "@/types/user";
+import { productInitialValuse, signUpInitialValues } from "@/componant/form/initialValues/formInitialValues";
+import { ProductValidationSchema, SignUpValidationSchema } from "@/componant/form/validations/formValidationSchema";
+import InputField from "@/componant/form/feilds/InputField";
+import SelectDropDown from "@/componant/form/feilds/selectDropDown";
+import SelectFile from "@/componant/form/feilds/selectFile";
+import { useRouter } from "next/router";
+import axiosInstance from "@/utils/interSeptor";
+import { createProductAction } from "@/redux/actions/productActions";
+
+const AddProduct = () => {
   const [preview, setPreview] = useState<string | null>(null);
-  const [editData, setEditData] = useState(initialValue);
   const fileInputRef = useRef();
   const dispatch = useDispatch();
   const router = useRouter();
-
+  
   const handleSubmit = async (
     values: any,
     { resetForm, setSubmitting }: any
   ) => {
     try {
       const formData = new FormData();
+
       Object.keys(values).forEach((key) => {
         formData.append(key, values[key] as string | Blob);
       });
-      for (const value of formData.values()) {
-        console.log(value, "======");
-      }
 
-      await dispatch(updateUserAction(formData as any) as any);
+      await dispatch(createProductAction(formData) as any);
       resetForm();
     } catch (error) {
       toast.error("There was an error submitting the form");
@@ -45,20 +40,19 @@ const UpdateUser = () => {
         fileInputRef.current.value = "";
       }
       setPreview(null);
-      setSubmitting(false); // Ensure that the form is set to not submitting state after submission
+      setSubmitting(false);
     }
   };
 
   useEffect(() => {
+    console.log(router.query, "======router.query");
     if (router.query) {
       let { id } = router.query;
       if (id) {
         axiosInstance
-          .get(`/user/getUserById`)
+          .get(`user/getUserById/${id}`)
           .then((res) => {
-            setEditData(res.data.data)
-            setPreview(res.data.data.logo)
-
+            console.log(res.data.data, "======res");
           })
           .catch((error) => {
             console.log(error, error);
@@ -75,38 +69,37 @@ const UpdateUser = () => {
             <div className="form_section">
               <div className="form_container">
                 <Formik
-                  initialValues={editData}
-                  validationSchema={UpdateUserValidationSchema}
+                  initialValues={productInitialValuse}
+                  validationSchema={ProductValidationSchema}
                   onSubmit={handleSubmit}
-                  enableReinitialize
                 >
                   {({ handleSubmit, setFieldValue, errors, setErrors }) => (
                     <Form onSubmit={handleSubmit}>
                       <InputField
-                        label={"Full name"}
-                        name={"name"}
+                        label={"Product title"}
+                        name={"title"}
                         type={"text"}
                       />
                       <InputField
-                        label={"Email"}
-                        name={"email"}
-                        type={"email"}
+                        label={"Product description"}
+                        name={"description"}
+                        type={"text"}
                       />
                       <InputField
-                        label={"Contact number"}
-                        name={"contact"}
+                        label={"Procuct Price"}
+                        name={"price"}
                         type={"text"}
                       />
                       <SelectFile
-                        label={"Select Image"}
-                        name={"logo"}
+                        label={"Select prodect Image"}
+                        name={"image"}
                         setFieldValue={setFieldValue}
                         preview={preview}
                         setPreview={setPreview}
                         fileInputRef={fileInputRef}
                       />
                       <button className="btn btn-primary" type="submit">
-                        Submit
+                        Create Product
                       </button>
                     </Form>
                   )}
@@ -121,4 +114,4 @@ const UpdateUser = () => {
 };
 
 
-export default UpdateUser;
+export default AddProduct;

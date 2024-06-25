@@ -1,19 +1,22 @@
-import { store } from "@/redux/store";
-import "@/styles/globals.css";
-import type { AppProps } from "next/app";
-import { Provider } from "react-redux";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../styles/Home.module.css";
+import { AppProps } from 'next/app';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from '@/redux/store';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from "react-toastify";
+import { ToastContainer } from 'react-toastify';
+import Layout from './layout';
+import "@/styles/globals.css";
 
-export default function App({ Component, pageProps }: AppProps) {
+
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <Provider store={store}>
+      <Layout>
         <Component {...pageProps} />
-        <ToastContainer />
-      </Provider>
+      </Layout>
+      <ToastContainer />
     </>
   );
 }
+
+export default MyApp;

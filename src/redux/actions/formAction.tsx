@@ -25,9 +25,18 @@ const delateUserAction = createAsyncThunk(
   }
 );
 const updateUserAction = createAsyncThunk(
-  "form/delateUserAction",
-  async ({ data, id }: { data: UserData; id: number }, thunkApi) => {
-    thunkApi.dispatch(UpdateUser({ data, id }));
+  "form/updateUserAction",
+  async (body: any, thunkApi) => {
+    axiosInstance
+      .patch("/user/updateUser", body)
+      .then((res) => {
+        toast.success(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err.response,"=========errr");
+        
+        toast.error(err?.response?.data?.message);
+      });
   }
 );
 const LoginUserAction = createAsyncThunk(
@@ -37,7 +46,7 @@ const LoginUserAction = createAsyncThunk(
       .post("/user/login", body)
       .then((res) => {
         toast.success(res.data.message);
-        if(res.data){
+        if (res.data) {
           localStorage.setItem("assignToken", res.data.data.token)
 
           thunkApi.dispatch(LoginReducer(res.data.data))
@@ -45,7 +54,7 @@ const LoginUserAction = createAsyncThunk(
       })
       .catch((err) => {
         console.log(err);
-        
+
         // toast.error(err.response.data.message);
       });
   }

@@ -1,14 +1,15 @@
+import { title } from "process";
 import * as Yup from "yup";
 const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/png'];
 
 const SignUpValidationSchema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  contact:Yup.string()
-  .matches(/^[0-9]+$/, "Contact number must be only digits")
-  .min(10, "Contact number must be at least 10 digits")
-  .max(10, "Contact number can't be more than 10 digits")
-  .required("Contact number is required"),
+  name: Yup.string().required("This field is required"),
+  email: Yup.string().email("Invalid email").required("This field is required"),
+  contact: Yup.string()
+    .matches(/^[0-9]+$/, "Contact number must be only digits")
+    .min(10, "Contact number must be at least 10 digits")
+    .max(10, "Contact number can't be more than 10 digits")
+    .required("This field is required"),
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
@@ -17,11 +18,11 @@ const SignUpValidationSchema = Yup.object().shape({
     .required("Confirm Password is required"),
   role: Yup.string().required("This field is required"),
   logo: Yup.mixed()
-    .required('Image is required')
+    .required('This field is required')
     .test(
       'fileType',
       'Only .jpg, .jpeg, and .png files are allowed',
-      (value:any) => !value || (value && SUPPORTED_FORMATS.includes(value.type))
+      (value: any) => !value || (value && SUPPORTED_FORMATS.includes(value.type))
     ),
 
 });
@@ -31,4 +32,39 @@ const SignInValidationSchema = Yup.object().shape({
   password: Yup.string().required("Password is required"),
 });
 
-export { SignUpValidationSchema, SignInValidationSchema };
+const UpdateUserValidationSchema = Yup.object().shape({
+  name: Yup.string().required("This field is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  contact: Yup.string()
+    .matches(/^[0-9]+$/, "Contact number must be only digits")
+    .min(10, "Contact number must be at least 10 digits")
+    .max(10, "Contact number can't be more than 10 digits")
+    .required("Contact number is required"),
+  logo: Yup.mixed()
+    .required('This field is required')
+    .test(
+      'fileType',
+      'Only .jpg, .jpeg, and .png files are allowed',
+      (value: any) => {
+        if (!value) return true; // Allow no value
+        if (typeof value === 'string') return true; // Allow URL strings
+        return SUPPORTED_FORMATS.includes(value.type);
+      }),
+});
+
+const ProductValidationSchema = Yup.object().shape({
+  title: Yup.string().required("This field is required"),
+  description: Yup.string().required("This field is required"),
+  price: Yup.string()
+    .matches(/^[0-9]+$/, "Contact number must be only digits")
+    .required("This field is required"),
+  image: Yup.mixed()
+    .required('This field is required')
+    .test(
+      'fileType',
+      'Only .jpg, .jpeg, and .png files are allowed',
+      (value: any) => !value || (value && SUPPORTED_FORMATS.includes(value.type))
+    ),
+});
+
+export { SignUpValidationSchema, SignInValidationSchema, UpdateUserValidationSchema, ProductValidationSchema };

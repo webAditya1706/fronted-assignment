@@ -17,3 +17,12 @@ export interface RenderTableProps {
   setEditDataById: (id: number) => void;
   startIndex:number;
 }
+
+export interface productInterface {
+  _id:string;
+  title:string;
+  description:string;
+  image:string;
+  price:string;
+  createdBy:string
+}

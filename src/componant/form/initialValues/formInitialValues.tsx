@@ -1,15 +1,29 @@
 const signUpInitialValues = {
   name: "",
   email: "",
-  contact:"",
+  contact: "",
   password: "",
   confirmPassword: "",
-  role:"",
-  logo:""
+  role: "",
+  logo: ""
 };
-const signInInitialValues={
+const signInInitialValues = {
   email: "",
   password: "",
 }
 
-export { signUpInitialValues, signInInitialValues };
+const updateUserInitialValues = {
+  name: "",
+  email: "",
+  contact: "",
+  logo: ""
+}
+
+const productInitialValuse = {
+  title: "",
+  description: "",
+  price: "",
+  image: ""
+}
+
+export { signUpInitialValues, signInInitialValues, updateUserInitialValues, productInitialValuse };

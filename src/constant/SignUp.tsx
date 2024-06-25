@@ -18,10 +18,7 @@ const SignUp = () => {
   const fileInputRef = useRef();
   const dispatch = useDispatch();
   const router = useRouter();
-  const { userData } = useSelector(
-    ({ persistedReducer }: any) => persistedReducer.FormReducer
-  );
-
+  
   const handleSubmit = async (
     values: any,
     { resetForm, setSubmitting }: any
@@ -36,16 +33,6 @@ const SignUp = () => {
       });
 
       await dispatch(createUserAction(formData) as any);
-
-      // If editDataById is not null, it means you're editing the user, uncomment and adjust the block below
-      /*
-      if (editDataById !== null) {
-        await dispatch(updateUserAction({ data: values, id: editDataById }) as any);
-        toast.success("User updated");
-      } else {
-        toast.success("User created");
-      }
-      */
       resetForm();
     } catch (error) {
       toast.error("There was an error submitting the form");
