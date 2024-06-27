@@ -56,15 +56,20 @@ const ProductValidationSchema = Yup.object().shape({
   title: Yup.string().required("This field is required"),
   description: Yup.string().required("This field is required"),
   price: Yup.string()
-    .matches(/^[0-9]+$/, "Contact number must be only digits")
+    .matches(/^[0-9]+$/, "Price must be only digits")
     .required("This field is required"),
   image: Yup.mixed()
-    .required('This field is required')
-    .test(
-      'fileType',
-      'Only .jpg, .jpeg, and .png files are allowed',
-      (value: any) => !value || (value && SUPPORTED_FORMATS.includes(value.type))
-    ),
+    .test('fileType', 'Only .jpg, .jpeg, and .png files are allowed', (value: any) => {
+      if (typeof value === 'string') {
+        // If value is a string, assume it's a valid URL and bypass file type check
+        return true;
+      }
+      // Otherwise, check the file type
+      return value && SUPPORTED_FORMATS.includes(value.type);
+    }),
 });
+
+
+
 
 export { SignUpValidationSchema, SignInValidationSchema, UpdateUserValidationSchema, ProductValidationSchema };

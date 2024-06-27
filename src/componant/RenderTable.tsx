@@ -21,12 +21,6 @@ function RenderTable({
     toast.error("User deleted");
   };
 
-  console.log("++++++++++++++++++++++++++");
-  
-
-  console.log(startIndex,"===startIndex");
-  
-
   return (
     <Table striped bordered hover variant="gray" className="mb-5">
       <thead>

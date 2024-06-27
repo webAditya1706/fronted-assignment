@@ -1,30 +1,29 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Formik, Form } from "formik";
-import { useDispatch, useSelector } from "react-redux";
-import { Col, Container, Row } from "react-bootstrap";
-import { toast } from "react-toastify";
-import { createUserAction, updateUserAction } from "@/redux/actions/formAction";
-import { UserData } from "@/types/user";
-import { signUpInitialValues } from "@/componant/form/initialValues/formInitialValues";
-import { SignUpValidationSchema } from "@/componant/form/validations/formValidationSchema";
 import InputField from "@/componant/form/feilds/InputField";
 import SelectDropDown from "@/componant/form/feilds/selectDropDown";
 import SelectFile from "@/componant/form/feilds/selectFile";
-import { useRouter } from "next/router";
+import { signUpInitialValues } from "@/componant/form/initialValues/formInitialValues";
+import { SignUpValidationSchema } from "@/componant/form/validations/formValidationSchema";
+import { createUserAction } from "@/redux/actions/formAction";
 import axiosInstance from "@/utils/interSeptor";
+import { Form, Formik } from "formik";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef();
   const dispatch = useDispatch();
   const router = useRouter();
-  
+
   const handleSubmit = async (
     values: any,
     { resetForm, setSubmitting }: any
   ) => {
     try {
-      console.log(values, "====");
       delete values.confirmPassword;
       const formData = new FormData();
 
@@ -32,8 +31,11 @@ const SignUp = () => {
         formData.append(key, values[key] as string | Blob);
       });
 
-      await dispatch(createUserAction(formData) as any);
-      resetForm();
+      const data = await dispatch(createUserAction(formData) as any);
+      if (data) {
+        resetForm();
+        router.push("/signin")
+      }
     } catch (error) {
       toast.error("There was an error submitting the form");
     } finally {
@@ -46,14 +48,12 @@ const SignUp = () => {
   };
 
   useEffect(() => {
-    console.log(router.query, "======router.query");
     if (router.query) {
       let { id } = router.query;
       if (id) {
         axiosInstance
           .get(`user/getUserById/${id}`)
           .then((res) => {
-            console.log(res.data.data, "======res");
           })
           .catch((error) => {
             console.log(error, error);
@@ -119,6 +119,10 @@ const SignUp = () => {
                     </Form>
                   )}
                 </Formik>
+                <div className="mt-3">
+                  <p>If you have your Account, Login <span>
+                    <Link href={"/signin"}>Here</Link></span></p>
+                </div>
               </div>
             </div>
           </Col>

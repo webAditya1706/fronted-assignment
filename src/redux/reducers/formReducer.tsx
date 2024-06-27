@@ -33,10 +33,13 @@ const createuserSlice = createSlice({
     },
     LoginReducer:(state,action) => {
       state.loginUser = action.payload
+    },
+    LogoutReducer:(state,action) => {
+      state.loginUser = {}
     }
   },
 });
 
-export const { userData, deleteUser, UpdateUser, LoginReducer } = createuserSlice.actions;
+export const { userData, deleteUser, UpdateUser, LoginReducer,LogoutReducer } = createuserSlice.actions;
 
 export default createuserSlice.reducer;

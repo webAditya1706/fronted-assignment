@@ -1,17 +1,19 @@
 import { ErrorMessage } from 'formik';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 
 interface Props {
   name: string;
   label: string;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-  preview: any;
-  setPreview: any;
+  preview: string| null;
+  setPreview: (value:string|null)=>void;
   fileInputRef: any
 
 }
 
 const SelectFile = ({ label, name, setFieldValue, preview, setPreview, fileInputRef }: Props) => {
+  const router = useRouter();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files ? event.currentTarget.files[0] : null;
@@ -28,6 +30,13 @@ const SelectFile = ({ label, name, setFieldValue, preview, setPreview, fileInput
       setPreview(null);
     }
   };
+
+  // useEffect(() => {
+  //   if(preview && router.query.id){
+  //     setFieldValue(name, preview);
+  //   }
+
+  // },[preview,router.query])
 
   return (
     <div className="mb-3">

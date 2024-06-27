@@ -1,15 +1,14 @@
 import PageWrapper from '@/componant/PageWrapper';
-import { deleteProductAction, getAllProductAction, updateProductAction } from '@/redux/actions/productActions';
-import React, { useCallback, useEffect, useState } from 'react';
+import WishlistIcon from '@/componant/WishlistIcon';
+import { deleteProductAction, getAllProductAction } from '@/redux/actions/productActions';
+import { productInterface } from '@/types/InterFace';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
 import { Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from './Pagination';
-import { useRouter } from 'next/router';
-import { productInterface } from '@/types/InterFace';
 
 const HomePage = () => {
-  const [editData, setEditData] = useState<productInterface | null>();
-  const [editDataById, setEditDataById] = useState<number | null>(null);
   const [showData, setShowData] = useState<productInterface[] | null>();
   const [startIndex, setStartIndex] = useState<number>(0);
   const [endIndex, setEndIndex] = useState<number>(3);
@@ -19,8 +18,8 @@ const HomePage = () => {
   const router = useRouter()
 
   const dispatch = useDispatch();
-  const { products } = useSelector(({ persistedReducer }: any) => persistedReducer.productReducer)
-  console.log(products, "========products");
+  const { products } = useSelector(({ persistedReducer }: any) => persistedReducer.productReducer);
+  const { loginUserData } = useSelector(({ persistedReducer }: any) => persistedReducer.FormReducer.loginUser)
 
   const fetchData = useCallback(() => {
     dispatch(getAllProductAction() as any);
@@ -70,10 +69,11 @@ const HomePage = () => {
         <h2 className='text-center'>Products</h2>
       </Col>
       {
-        showData && showData.length > 0 && showData.map((product: any, index: number) => {
+        showData && showData.length > 0 && showData.map((product: productInterface, index: number) => {
           return (
             <Col xs={12} md={4} key={index}>
               <div className='product_card mb-5'>
+                {loginUserData?.role =="user" &&<WishlistIcon  product={product} />}
                 <div>
                   <img
                     className='product_img'
@@ -84,17 +84,17 @@ const HomePage = () => {
                     <h4 className='product_title'>{product.title}</h4>
                     <p className='product_price'>₹{product.price}</p>
                   </div>
-                  <div>
+                  {loginUserData && loginUserData?.role == "admin" && <div className='d-flex justify-content-between'>
                     <button className='btn btn-primary' onClick={() => handleDeleteProduct(product._id)}>Delete</button>
                     <button className='btn btn-primary' onClick={() => router.push(`product/${product._id}`)}>Edit</button>
-                  </div>
+                  </div>}
                 </div>
               </div>
-            </Col>
+            </Col>            
           )
         })
       }
-     {showData && showData.length > 3 && <Col xs={12} className='py-4'>
+      {products && products.length > 3 && <Col xs={12} className='py-4'>
         <Pagination
           indexNomber={indexNomber}
           setIndexNomber={setIndexNomber}

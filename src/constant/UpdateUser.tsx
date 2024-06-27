@@ -32,9 +32,9 @@ const UpdateUser = () => {
       Object.keys(values).forEach((key) => {
         formData.append(key, values[key] as string | Blob);
       });
-      for (const value of formData.values()) {
-        console.log(value, "======");
-      }
+      // for (const value of formData.values()) {
+      //   console.log(value, "======");
+      // }
 
       await dispatch(updateUserAction(formData as any) as any);
       resetForm();

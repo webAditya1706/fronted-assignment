@@ -1,3 +1,3 @@
-import UpdateProduct from "@/constant/productComponant/UpdateProduct";
+import AddProduct from "../addproduct";
 
-export default UpdateProduct
+export default AddProduct;

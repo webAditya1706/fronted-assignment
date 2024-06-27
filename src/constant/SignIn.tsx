@@ -10,25 +10,24 @@ import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Pagination from "./Pagination";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 const SignIn = () => {
-  const [editData, setEditData] = useState<UserData | null>();
-  const [editDataById, setEditDataById] = useState<number | null>(null);
-  const [showData, setShowData] = useState<UserData[] | null>();
-  const [startIndex, setStartIndex] = useState<number>(0);
-  const [endIndex, setEndIndex] = useState<number>(3);
-  const [indexNomber, setIndexNomber] = useState<number>(1);
-  const [totalUser, setTotalUser] = useState<number>(0);
-  const [renderUserNum, setRenderUserNum] = useState<number>(3);
+  const router = useRouter()
 
   const dispatch = useDispatch();
 
-  const handleSubmit = (values: LoginUserInterFace, { resetForm }: any) => {   
-      dispatch(LoginUserAction(values) as any);    
-    resetForm();
+  const handleSubmit = async (values: LoginUserInterFace, { resetForm }: any) => {
+    const data = await dispatch(LoginUserAction(values) as any);
+    if (data) {
+      resetForm();
+      router.push("/")
+      toast.success(data.payload.message)
+    }
   };
 
-  
+
   return (
     <section>
       <Container>
@@ -36,7 +35,7 @@ const SignIn = () => {
           <Col className="m-auto" xs={12} md={6}>
             <div className="form_section">
               <div className="form_container">
-                <h1 className="text-center">Contact Form</h1>
+                <h1 className="text-center">Login Form</h1>
                 <Formik
                   initialValues={signInInitialValues}
                   validationSchema={SignInValidationSchema}
@@ -56,15 +55,19 @@ const SignIn = () => {
                         type={"password"}
                       />
                       <button className="btn btn-primary" type="submit">
-                      Login
+                        Login
                       </button>
                     </Form>
                   )}
                 </Formik>
+                <div className="mt-3">
+                  <p>If you don't have your Account, Ragister <span>
+                    <Link href={"/signup"}>Here</Link></span></p>
+                </div>
               </div>
             </div>
           </Col>
-        </Row>        
+        </Row>
       </Container>
     </section>
   );
