@@ -74,6 +74,25 @@ const getProducByIdtAction = createAsyncThunk(
     }
   })
 
+  const getProductFullDetail = createAsyncThunk(
+    "product/getProductFullDetail",
+    async (id: string, thunkApi) => {
+      try {
+        const response = await axiosInstance.get(`/product/getProductfulldetail/${id}`);
+        if (response.data) {
+          return response.data.data;
+        } else {
+          toast.error("Something went wrong");
+        }
+      } catch (err: any) {
+        if (err?.response) {
+          toast.error(err?.response?.data?.message);
+        } else {
+          toast.error("Something went wrong");
+        }
+      }
+    })
+
 const updateProductAction = createAsyncThunk(
   "product/updateProductAction",
   async ({ formData, id }: any, thunkApi) => {
@@ -104,4 +123,5 @@ export {
   deleteProductAction,
   getProducByIdtAction,
   wishlistAction,
+  getProductFullDetail,
 }

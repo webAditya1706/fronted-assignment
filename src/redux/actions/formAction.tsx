@@ -1,8 +1,8 @@
-import { LoginUserInterFace, UserData } from "@/types/user";
+import { LoginUserInterFace } from "@/types/InterFace";
 import axiosInstance from "@/utils/interSeptor";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { LoginReducer, LogoutReducer, UpdateUser, deleteUser } from "../reducers/formReducer";
+import { LoginReducer, LogoutReducer, deleteUser } from "../reducers/formReducer";
 
 const createUserAction = createAsyncThunk(
   "form/createUser",
@@ -14,18 +14,9 @@ const createUserAction = createAsyncThunk(
           toast.success(res.data.message);
           return res.data;
         })
-    } catch (error) {
+    } catch (error:any) {
       toast.error(error.response.data.message);
     }
-    // axiosInstance
-    //   .post("/user/ragister", body)
-    //   .then((res) => {
-    //     toast.success(res.data.message);
-    //     return res.data;
-    //   })
-    //   .catch((err) => {
-    //     toast.error(err.response.data.message);
-    //   });
   }
 );
 
@@ -59,7 +50,7 @@ const LoginUserAction = createAsyncThunk(
               localStorage.setItem("assignToken", response.data.data.token)
               return response.data;
             }
-    } catch (error) {
+    } catch (error:any) {
       toast.error(error.response.data.message);
     }
   }
@@ -70,16 +61,15 @@ const LogoutUserAction = createAsyncThunk(
   async (_, thunkApi) => {
     try {
       localStorage.removeItem("assignToken")
-      thunkApi.dispatch(LogoutReducer())
+      thunkApi.dispatch(LogoutReducer(null))
     } catch (error) {
       toast.error("Something went wrong")
     }
   });
 
 export {
-  LoginUserAction,
-  createUserAction,
+  LoginUserAction, LogoutUserAction, createUserAction,
   delateUserAction,
-  updateUserAction,
-  LogoutUserAction,
+  updateUserAction
 };
+

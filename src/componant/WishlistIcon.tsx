@@ -14,7 +14,6 @@ const WishlistIcon = ({ product }: any) => {
     }
 
     return (
-        <div className='position-relative'>
             <div className='wishlist_round' onClick={handleWishlist} >
                 {
                     isWishlist ?
@@ -23,7 +22,6 @@ const WishlistIcon = ({ product }: any) => {
                         <i className="bi bi-suit-heart-fill wishlist"></i>
                 }
             </div>
-        </div>
     )
 }
 

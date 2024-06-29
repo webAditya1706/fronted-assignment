@@ -1,3 +1,3 @@
-import AddProduct from "../addproduct";
+import ProductDescription from "@/constant/productComponant/ProductDescription";
 
-export default AddProduct;
+export default ProductDescription

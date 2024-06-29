@@ -3,19 +3,16 @@ import { productInterface } from '@/types/InterFace'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 
-const TrashWishlist = ({product}:any) => {
-    const dispatch = useDispatch()
+interface props {
+  product:productInterface;
+  handleWishlist: (product:productInterface) => void;
+}
 
-    const handleWishlist = () => {
-        dispatch(wishlistAction(product as productInterface) as any)
-    }
+const TrashWishlist = ({product,handleWishlist}:props) => {
   return (
-    <div className='position-relative'>
-            <div className='wishlist_round' onClick={handleWishlist} >
+            <div className='wishlist_round' onClick={()=>handleWishlist(product)} >
             <i className="bi bi-trash-fill" style={{color:"red"}}></i>
-            {/* <i className="bi bi-trash" style={{color:"red"}}></i> */}
             </div>
-        </div>
   )
 }
 

@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Pagination from './Pagination';
 
 const HomePage = () => {
-  const [showData, setShowData] = useState<productInterface[] | null>();
+  const [showData, setShowData] = useState<productInterface[] | null>([]);
   const [startIndex, setStartIndex] = useState<number>(0);
   const [endIndex, setEndIndex] = useState<number>(3);
   const [indexNomber, setIndexNomber] = useState<number>(1);
@@ -71,9 +71,9 @@ const HomePage = () => {
       {
         showData && showData.length > 0 && showData.map((product: productInterface, index: number) => {
           return (
-            <Col xs={12} md={4} key={index}>
-              <div className='product_card mb-5'>
-                {loginUserData?.role =="user" &&<WishlistIcon  product={product} />}
+            <Col xs={12} md={4} key={index} className='position-relative'>
+              {loginUserData?.role == "user" && <WishlistIcon product={product} />}
+              <div className='product_card mb-5' onClick={() => router.push(`product/${product._id}`)}>
                 <div>
                   <img
                     className='product_img'
@@ -86,11 +86,11 @@ const HomePage = () => {
                   </div>
                   {loginUserData && loginUserData?.role == "admin" && <div className='d-flex justify-content-between'>
                     <button className='btn btn-primary' onClick={() => handleDeleteProduct(product._id)}>Delete</button>
-                    <button className='btn btn-primary' onClick={() => router.push(`product/${product._id}`)}>Edit</button>
+                    <button className='btn btn-primary' onClick={() => router.push(`updateproduct/${product._id}`)}>Edit</button>
                   </div>}
                 </div>
               </div>
-            </Col>            
+            </Col>
           )
         })
       }

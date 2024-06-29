@@ -39,10 +39,13 @@ const Header: React.FC = () => {
                                         <Link className="dropdown-item" href={`/updateuser/${loginUserData._id}`}>Update user</Link>
                                     </li>
                                     <li>
-                                        <Link className="dropdown-item" href={`addproduct`}>Create Product</Link>
+                                        <Link className="dropdown-item" href={`/addproduct`}>Create Product</Link>
                                     </li>
                                     <li>
-                                        <Link className="dropdown-item" href={`wishlist`}>Wishlist</Link>
+                                        <Link className="dropdown-item" href={`/wishlist`}>Wishlist</Link>
+                                    </li>
+                                    <li>
+                                        <Link className="dropdown-item" href={`/cart`}>Cart</Link>
                                     </li>
                                     <li>
                                         <button className="dropdown-item" onClick={handleLogout}>Logout</button>
