@@ -1,14 +1,13 @@
 import InputField from "@/componant/form/feilds/InputField";
 import SelectFile from "@/componant/form/feilds/selectFile";
-import { updateUserInitialValues } from "@/componant/form/initialValues/formInitialValues";
 import { UpdateUserValidationSchema } from "@/componant/form/validations/formValidationSchema";
-import { createUserAction, updateUserAction } from "@/redux/actions/formAction";
+import { updateUserAction } from "@/redux/actions/formAction";
 import axiosInstance from "@/utils/interSeptor";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 const initialValue = {
   name: "",
@@ -19,7 +18,7 @@ const initialValue = {
 const UpdateUser = () => {
   const [preview, setPreview] = useState<string | null>(null);
   const [editData, setEditData] = useState(initialValue);
-  const fileInputRef = useRef();
+  const fileInputRef = useRef<any>();
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -36,7 +35,12 @@ const UpdateUser = () => {
       //   console.log(value, "======");
       // }
 
-      await dispatch(updateUserAction(formData as any) as any);
+      const {payload} = await dispatch(updateUserAction(formData as any) as any);
+      console.log(payload,"===payload");
+      if(payload){
+        toast.success(payload.message);
+        // router.push("/")
+      }      
       resetForm();
     } catch (error) {
       toast.error("There was an error submitting the form");
@@ -45,7 +49,7 @@ const UpdateUser = () => {
         fileInputRef.current.value = "";
       }
       setPreview(null);
-      setSubmitting(false); // Ensure that the form is set to not submitting state after submission
+      setSubmitting(false);
     }
   };
 
@@ -73,7 +77,7 @@ const UpdateUser = () => {
         <Row>
           <Col className="m-auto" xs={12} md={6}>
             <div className="form_section">
-              <div className="form_container">
+              <div className="form_container my-5">
                 <Formik
                   initialValues={editData}
                   validationSchema={UpdateUserValidationSchema}

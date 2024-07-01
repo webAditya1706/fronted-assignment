@@ -1,15 +1,13 @@
 import InputField from "@/componant/form/feilds/InputField";
 import SelectFile from "@/componant/form/feilds/selectFile";
-import { updateUserInitialValues } from "@/componant/form/initialValues/formInitialValues";
 import { UpdateUserValidationSchema } from "@/componant/form/validations/formValidationSchema";
-import { createUserAction, updateUserAction } from "@/redux/actions/formAction";
+import { updateUserAction } from "@/redux/actions/formAction";
 import { getProducByIdtAction } from "@/redux/actions/productActions";
-import axiosInstance from "@/utils/interSeptor";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 const initialValue = {
   name: "",
@@ -20,7 +18,7 @@ const initialValue = {
 const UpdateProduct = () => {
   const [preview, setPreview] = useState<string | null>(null);
   const [editData, setEditData] = useState(initialValue);
-  const fileInputRef = useRef();
+  const fileInputRef = useRef<any>();
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -54,8 +52,6 @@ const UpdateProduct = () => {
 
   const getProductData = async () => {
     const data = await dispatch(getProducByIdtAction(router.query.id as string) as any);
-    console.log(data,"=======data");
-    
   }
 
   return (
@@ -64,7 +60,7 @@ const UpdateProduct = () => {
         <Row>
           <Col className="m-auto" xs={12} md={6}>
             <div className="form_section">
-              <div className="form_container">
+              <div className="form_container my-5">
                 <Formik
                   initialValues={editData}
                   validationSchema={UpdateUserValidationSchema}

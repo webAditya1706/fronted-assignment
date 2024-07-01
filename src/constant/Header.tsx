@@ -1,6 +1,5 @@
 import { LogoutUserAction } from '@/redux/actions/formAction';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -10,8 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const Header: React.FC = () => {
     const { loginUserData } = useSelector(({ persistedReducer }: any) => persistedReducer.FormReducer.loginUser)
-    const router = useRouter();
     const dispatch = useDispatch();
+    console.log(loginUserData, "======loginUserData");
     const token = localStorage.getItem("assignToken")
 
     const handleLogout = () => {
@@ -31,22 +30,30 @@ const Header: React.FC = () => {
                                 <li className="nav-item">
                                     <Link className="nav-link active" aria-current="page" href="/">Home</Link>
                                 </li>
-                                <NavDropdown title={<img src='https://t4.ftcdn.net/jpg/01/43/23/83/360_F_143238306_lh0ap42wgot36y44WybfQpvsJB5A1CHc.jpg' alt='user' className='user_img' />} id="basic-nav-dropdown">
-                                    <li>
-                                        <Link className="dropdown-item" href="/profile">Profile</Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item" href={`/updateuser/${loginUserData._id}`}>Update user</Link>
-                                    </li>
+                                {loginUserData.role === "superAdmin" && <li className="nav-item">
+                                    <Link className="nav-link active" aria-current="page" href="/users">Users</Link>
+                                </li>}
+                                {loginUserData.role === "admin" &&
                                     <li>
                                         <Link className="dropdown-item" href={`/addproduct`}>Create Product</Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item" href={`/wishlist`}>Wishlist</Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item" href={`/cart`}>Cart</Link>
-                                    </li>
+                                    </li>}
+                                <NavDropdown title={<img src={loginUserData.logo} alt='user' className='user_img' />} id="basic-nav-dropdown">
+                                    {(loginUserData.role === "user" || loginUserData.role === "admin") && (
+                                        <li>
+                                            <Link className="dropdown-item" href={`/updateuser/${loginUserData._id}`}>Update user</Link>
+                                        </li>
+                                    )}
+
+                                    {loginUserData.role === "user" &&
+                                        <div>
+                                            <li>
+                                                <Link className="dropdown-item" href={`/wishlist`}>Wishlist</Link>
+                                            </li>
+                                            <li>
+                                                <Link className="dropdown-item" href={`/cart`}>Cart</Link>
+                                            </li>
+                                        </div>
+                                    }
                                     <li>
                                         <button className="dropdown-item" onClick={handleLogout}>Logout</button>
                                     </li>

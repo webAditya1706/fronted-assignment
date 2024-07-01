@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Layout from './layout';
-import HandleRoute from "./handleRoutes";
+import HandleRoute from "./HandleRoutes";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

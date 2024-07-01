@@ -2,7 +2,7 @@ import { productInterface } from "@/types/InterFace";
 import axiosInstance from "@/utils/interSeptor";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { addToCartReducer, getAllCartReducer, removeFromCartReducer } from "../reducers/cartReducer";
+import { addToCartReducer, getAllCartReducer, removeAllCartReducer, removeFromCartReducer } from "../reducers/cartReducer";
 
 
 const addTocartAction = createAsyncThunk(
@@ -35,8 +35,7 @@ const getAllCartAction = createAsyncThunk(
 
 const removeFromCartAction = createAsyncThunk(
     "cart/addTocartAction",
-    async (id:string, thunkApi) => {
-        console.log(id, "=================id");
+    async (id: string, thunkApi) => {
         try {
             const response = await axiosInstance.delete(`/cart/removeFromCart/${id}`);
             if (response) {
@@ -45,10 +44,24 @@ const removeFromCartAction = createAsyncThunk(
                 return response.data.data
             }
         } catch (error: any) {
-            console.log(error.response,"=========error.response");
-            
+            console.log(error.response, "=========error.response");
             toast.error(error.response.data.message);
         }
     })
 
-export { addTocartAction, getAllCartAction, removeFromCartAction }
+const placeorderAction = createAsyncThunk(
+    "cart/placeorder",
+    async (_,thunkApi) => {
+        try {
+            const response = await axiosInstance.delete("/cart/placeorder");
+            if (response) {
+                toast.success(response.data.message);
+                thunkApi.dispatch(removeAllCartReducer(null))
+            }
+        } catch (error: any) {
+            toast.error(error.response.data.message);
+        }
+    }
+)
+
+export { addTocartAction, getAllCartAction, removeFromCartAction, placeorderAction }

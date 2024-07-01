@@ -4,15 +4,15 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 
 interface props {
-  product:productInterface;
-  handleWishlist: (product:productInterface) => void;
+  product: productInterface;
+  handleWishlist: (product: productInterface) => void;
 }
 
-const TrashWishlist = ({product,handleWishlist}:props) => {
+const TrashWishlist = ({ product, handleWishlist }: props) => {
   return (
-            <div className='wishlist_round' onClick={()=>handleWishlist(product)} >
-            <i className="bi bi-trash-fill" style={{color:"red"}}></i>
-            </div>
+    <div className='wishlist_round' onClick={() => handleWishlist(product)} >
+      <i className="bi bi-trash-fill" style={{ color: "red" }}></i>
+    </div>
   )
 }
 

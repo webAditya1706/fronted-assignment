@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 const AddProduct = () => {
   const [preview, setPreview] = useState<string | null>(null);
   const [editProduct, setEditProduct] = useState({})
-  const fileInputRef = useRef();
+  const fileInputRef = useRef<any>();
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -28,14 +28,15 @@ const AddProduct = () => {
         formData.append(key, values[key] as string | Blob);
       });
       if (router.query.id) {
-        const result = await dispatch(updateProductAction({ formData, id: router.query.id as string }) as any);
-        if (result) {
-          resetForm();
+        const {payload} = await dispatch(updateProductAction({ formData, id: router.query.id as string }) as any);
+        if (payload) {
+          toast.success(payload.data.message);
           router.push("/")
         }
       } else {
-        const result = await dispatch(createProductAction(formData as any) as any);
-        if (result) {
+        const {payload} = await dispatch(createProductAction(formData as any) as any);
+        if (payload) {
+          toast.success(payload.data.message);
           router.push("/")
           resetForm();
         }
@@ -65,7 +66,6 @@ const AddProduct = () => {
       setPreview(data.payload.image);
     } catch (error) {
       console.log(error, "=============error");
-
     }
   }
 
@@ -75,7 +75,7 @@ const AddProduct = () => {
         <Row>
           <Col className="m-auto" xs={12} md={6}>
             <div className="form_section">
-              <div className="form_container">
+              <div className="form_container my-5">
                 <Formik
                   initialValues={editProduct || productInitialValuse}
                   validationSchema={ProductValidationSchema}

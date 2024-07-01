@@ -21,14 +21,17 @@ const cartSlice = createSlice({
     reducers: {
         addToCartReducer: (state: any, action: PayloadAction<CartState>) => {
             let data = action.payload
-            state.cart.unshift(action.payload);  
-            
+            state.cart.unshift(action.payload);
+
         },
         getAllCartReducer: (state, action) => {
             state.cart = action.payload
         },
         removeFromCartReducer: (state, action: PayloadAction<string>) => {
-            state.cart = state.cart.filter((cart:CartItem) => cart._id !== action.payload);
+            state.cart = state.cart.filter((cart: CartItem) => cart._id !== action.payload);
+        },
+        removeAllCartReducer: (state, action) => {
+            state.cart = []
         },
 
     },
@@ -36,5 +39,5 @@ const cartSlice = createSlice({
 });
 
 // Export actions and reducer
-export const { addToCartReducer, getAllCartReducer, removeFromCartReducer } = cartSlice.actions;
+export const { addToCartReducer, getAllCartReducer, removeFromCartReducer, removeAllCartReducer } = cartSlice.actions;
 export default cartSlice.reducer;

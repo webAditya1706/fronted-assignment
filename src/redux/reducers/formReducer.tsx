@@ -3,12 +3,14 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface UserState {
   userData: UserData[];
-  loginUser:any
+  loginUser: any
 }
 
 const initialState: UserState = {
   userData: [],
-  loginUser:{}
+  loginUser: {
+
+  }
 };
 
 const createuserSlice = createSlice({
@@ -24,22 +26,21 @@ const createuserSlice = createSlice({
       );
       state.userData = updatedData;
     },
-    UpdateUser: (state, action) => {
-      let updatedData = JSON.parse(JSON.stringify(state.userData)).map(
-        (item: UserData, index: number) =>
-          index === action.payload.id ? action.payload.data : item
-      );
-      state.userData = updatedData;
+    UpdateUserReducer: (state, action) => {      
+      state.loginUser.loginUserData = action.payload
     },
-    LoginReducer:(state,action) => {
+    LoginReducer: (state, action) => {
+      // const loginUserData = { ...action.payload }
+      console.log(action.payload,"============ reducer");
+      
       state.loginUser = action.payload
     },
-    LogoutReducer:(state,action) => {
+    LogoutReducer: (state, action) => {
       state.loginUser = {}
     }
   },
 });
 
-export const { userData, deleteUser, UpdateUser, LoginReducer,LogoutReducer } = createuserSlice.actions;
+export const { userData, deleteUser, UpdateUserReducer, LoginReducer, LogoutReducer } = createuserSlice.actions;
 
 export default createuserSlice.reducer;

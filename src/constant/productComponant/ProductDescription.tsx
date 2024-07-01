@@ -53,9 +53,9 @@ const ProductDescription = () => {
             {product ? (
                 <>
                     <Col xs={12} md={6} className="mt-5">
-                        <img className="product_img" src={product.image} alt={product.title} />
+                        <img className="product_des_img" src={product.image} alt={product.title} />
                     </Col>
-                    <Col xs={12} md={6} className="mt-5">
+                    <Col xs={12} md={6} className="mt-5 d-flex">
                         <div className="product_discription">
                             <h3 className="product_title">{product.title}</h3>
                             <p>{product.description}</p>

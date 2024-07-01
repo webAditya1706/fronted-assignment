@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [preview, setPreview] = useState<string | null>(null);
-  const fileInputRef = useRef();
+  const fileInputRef = useRef<any>();
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -31,8 +31,12 @@ const SignUp = () => {
         formData.append(key, values[key] as string | Blob);
       });
 
-      const data = await dispatch(createUserAction(formData) as any);
-      if (data) {
+      const {payload} = await dispatch(createUserAction(formData) as any);
+      console.log(payload,"********************* data");
+      
+      if (payload) {
+        toast.success(payload.message);
+
         resetForm();
         router.push("/signin")
       }
@@ -68,7 +72,7 @@ const SignUp = () => {
         <Row>
           <Col className="m-auto" xs={12} md={6}>
             <div className="form_section">
-              <div className="form_container">
+              <div className="form_container my-5">
                 <Formik
                   initialValues={signUpInitialValues}
                   validationSchema={SignUpValidationSchema}

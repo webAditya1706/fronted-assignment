@@ -2,19 +2,18 @@ import { LoginUserInterFace } from "@/types/InterFace";
 import axiosInstance from "@/utils/interSeptor";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { LoginReducer, LogoutReducer, deleteUser } from "../reducers/formReducer";
+import { LoginReducer, LogoutReducer, UpdateUserReducer, deleteUser } from "../reducers/formReducer";
 
 const createUserAction = createAsyncThunk(
   "form/createUser",
   async (body: any, thunkApi) => {
     try {
-      axiosInstance
+      const response = await axiosInstance
         .post("/user/ragister", body)
-        .then((res) => {
-          toast.success(res.data.message);
-          return res.data;
-        })
-    } catch (error:any) {
+      if (response) {
+        return response.data;
+      }
+    } catch (error: any) {
       toast.error(error.response.data.message);
     }
   }
@@ -26,31 +25,36 @@ const delateUserAction = createAsyncThunk(
     thunkApi.dispatch(deleteUser(id));
   }
 );
+
 const updateUserAction = createAsyncThunk(
   "form/updateUserAction",
   async (body: any, thunkApi) => {
-    axiosInstance
-      .patch("/user/updateUser", body)
-      .then((res) => {
-        toast.success(res.data.message);
-      })
-      .catch((err) => {
-        toast.error(err?.response?.data?.message);
-      });
-  }
-);
+    try {
+      const response = await axiosInstance
+      .patch("/user/updateUser", body);
+      if(response){
+        thunkApi.dispatch(UpdateUserReducer(response.data.data));
+        console.log(response.data,"============== action");
+        
+        return response.data
+      }
+    } catch (error:any) {
+      toast.error(error?.response?.data?.message);
+    }
+  });
+
 const LoginUserAction = createAsyncThunk(
   "user/login",
   async (body: LoginUserInterFace, thunkApi) => {
     try {
       const response = await axiosInstance
         .post("/user/login", body);
-        if (response.data) {
-              thunkApi.dispatch(LoginReducer(response.data.data));
-              localStorage.setItem("assignToken", response.data.data.token)
-              return response.data;
-            }
-    } catch (error:any) {
+      if (response.data) {
+        thunkApi.dispatch(LoginReducer(response.data.data));
+        localStorage.setItem("assignToken", response.data.data.token)
+        return response.data;
+      }
+    } catch (error: any) {
       toast.error(error.response.data.message);
     }
   }
@@ -67,9 +71,24 @@ const LogoutUserAction = createAsyncThunk(
     }
   });
 
+const GetAllUsersAction = createAsyncThunk(
+  "user/GetAllUsersAction",
+  async (_, thunkApi) => {
+    try {
+      const response = await axiosInstance.get("/user/getAllUser");
+      return response.data.data;
+      return response
+    } catch (error) {
+      toast.error("Something went wrong")
+    }
+  });
+
 export {
-  LoginUserAction, LogoutUserAction, createUserAction,
+  LoginUserAction,
+  LogoutUserAction,
+  createUserAction,
   delateUserAction,
-  updateUserAction
+  updateUserAction,
+  GetAllUsersAction
 };
 

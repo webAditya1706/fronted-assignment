@@ -32,8 +32,6 @@ const WishlistPage = () => {
         if (wishlist && wishlist.length > 0) {
             const totalIndex = Math.ceil(wishlist.length / renderUserNum);
             setTotalUser(totalIndex);
-
-            // Adjust indices if they exceed the total number of items
             if (startIndex >= wishlist.length) {
                 setStartIndex(Math.max(0, startIndex - renderUserNum));
                 setEndIndex(Math.max(renderUserNum, endIndex - renderUserNum));
@@ -57,7 +55,7 @@ const WishlistPage = () => {
                 <h2 className='text-center'>Products</h2>
             </Col>
             {
-                showData && showData.length > 0 && showData.map((product: productInterface, index: number) => (
+                showData && showData.length > 0 ? showData.map((product: productInterface, index: number) => (
                     <Col xs={12} md={4} key={index} className='position-relative'>
                         <TrashWishlist product={product} handleWishlist={handleWishlist} />
                         <div className='product_card mb-5' onClick={() => router.push(`product/${product._id}`)}>
@@ -73,6 +71,11 @@ const WishlistPage = () => {
                         </div>
                     </Col>
                 ))
+                    :
+                    <div className='no_data'>
+                        <img src='/no_data.png' />
+                        <h2>Data Not Found</h2>
+                    </div>
             }
             {wishlist && wishlist.length > 3 && (
                 <Col xs={12} className='py-4'>

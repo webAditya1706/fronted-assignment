@@ -6,10 +6,10 @@ import { createUserAction, updateUserAction } from "@/redux/actions/formAction";
 import { UserData } from "@/types/user";
 import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Pagination from "./Pagination";
-import { useDispatch, useSelector } from "react-redux";
-import { Col, Container, Row } from "react-bootstrap";
 
 const HomePagecopy = () => {
   const [editData, setEditData] = useState<UserData | null>();
@@ -70,7 +70,7 @@ const HomePagecopy = () => {
         <Row>
           <Col className="m-auto" xs={12} md={6}>
             <div className="form_section">
-              <div className="form_container">
+              <div className="form_container my-5">
                 {/* <h1 className="text-center">Contact Form</h1> */}
                 <Formik
                   initialValues={editData || ragistrationInitialValues}
