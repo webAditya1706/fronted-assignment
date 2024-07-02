@@ -1,5 +1,6 @@
 import { LogoutUserAction } from '@/redux/actions/formAction';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -12,9 +13,11 @@ const Header: React.FC = () => {
     const dispatch = useDispatch();
     console.log(loginUserData, "======loginUserData");
     const token = localStorage.getItem("assignToken")
+    const router = useRouter()
 
     const handleLogout = () => {
-        dispatch(LogoutUserAction() as any)
+        dispatch(LogoutUserAction() as any);
+        router.push("/signin")
     }
 
     return (
