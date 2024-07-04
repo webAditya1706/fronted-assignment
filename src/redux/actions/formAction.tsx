@@ -1,13 +1,15 @@
 import { LoginUserInterFace } from "@/types/InterFace";
 import axiosInstance from "@/utils/interSeptor";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import Cookies from 'js-cookie';
 import { toast } from "react-toastify";
 import { LoginReducer, LogoutReducer, UpdateUserReducer, deleteUser } from "../reducers/formReducer";
+
 
 const createUserAction = createAsyncThunk(
   "form/createUser",
   async (body: any, thunkApi) => {
-    try {
+    try { 
       const response = await axiosInstance
         .post("/user/ragister", body)
       if (response) {
@@ -34,8 +36,6 @@ const updateUserAction = createAsyncThunk(
       .patch("/user/updateUser", body);
       if(response){
         thunkApi.dispatch(UpdateUserReducer(response.data.data));
-        console.log(response.data,"============== action");
-        
         return response.data
       }
     } catch (error:any) {
@@ -51,6 +51,8 @@ const LoginUserAction = createAsyncThunk(
         .post("/user/login", body);
       if (response.data) {
         thunkApi.dispatch(LoginReducer(response.data.data));
+        Cookies.set('assignToken', response.data.data.token , { expires: 1/2 })
+
         localStorage.setItem("assignToken", response.data.data.token)
         return response.data;
       }
@@ -64,6 +66,7 @@ const LogoutUserAction = createAsyncThunk(
   "user/login",
   async (_, thunkApi) => {
     try {
+      Cookies.remove('assignToken');
       localStorage.removeItem("assignToken")
       thunkApi.dispatch(LogoutReducer(null))
     } catch (error) {
@@ -84,11 +87,10 @@ const GetAllUsersAction = createAsyncThunk(
   });
 
 export {
-  LoginUserAction,
+  GetAllUsersAction, LoginUserAction,
   LogoutUserAction,
   createUserAction,
   delateUserAction,
-  updateUserAction,
-  GetAllUsersAction
+  updateUserAction
 };
 

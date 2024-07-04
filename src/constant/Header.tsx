@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 const Header: React.FC = () => {
     const { loginUserData } = useSelector(({ persistedReducer }: any) => persistedReducer.FormReducer.loginUser)
     const dispatch = useDispatch();
-    console.log(loginUserData, "======loginUserData");
     const token = localStorage.getItem("assignToken")
     const router = useRouter()
 

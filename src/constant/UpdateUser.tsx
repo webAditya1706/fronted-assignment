@@ -36,10 +36,9 @@ const UpdateUser = () => {
       // }
 
       const {payload} = await dispatch(updateUserAction(formData as any) as any);
-      console.log(payload,"===payload");
       if(payload){
         toast.success(payload.message);
-        // router.push("/")
+        router.push("/")
       }      
       resetForm();
     } catch (error) {

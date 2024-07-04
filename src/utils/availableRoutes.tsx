@@ -22,3 +22,8 @@ export const SupperAdminRoutes = [
     "/signin",
     "/signup"
 ];
+
+export const UnAuthorizedUser = [
+    "/signin",
+    "signup"
+]

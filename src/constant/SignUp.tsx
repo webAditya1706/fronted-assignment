@@ -32,7 +32,6 @@ const SignUp = () => {
       });
 
       const {payload} = await dispatch(createUserAction(formData) as any);
-      console.log(payload,"********************* data");
       
       if (payload) {
         toast.success(payload.message);

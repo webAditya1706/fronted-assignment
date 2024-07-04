@@ -31,8 +31,6 @@ const createuserSlice = createSlice({
     },
     LoginReducer: (state, action) => {
       // const loginUserData = { ...action.payload }
-      console.log(action.payload,"============ reducer");
-      
       state.loginUser = action.payload
     },
     LogoutReducer: (state, action) => {
